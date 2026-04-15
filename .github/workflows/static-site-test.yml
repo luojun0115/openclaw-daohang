@@ -1,0 +1,152 @@
+name: Static Site Tests
+
+on:
+  # 每次提交都触发，不限制分支
+  push:
+  pull_request:
+  schedule:
+    # 每天凌晨2点运行一次（UTC时间）
+    - cron: '0 2 * * *'
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  lint-and-validate:
+    name: Lint and Validate Files
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install HTMLHint for HTML validation
+      run: |
+        npm install -g htmlhint
+        
+    - name: Install CSSLint for CSS validation
+      run: |
+        npm install -g csslint
+        
+    - name: Find and validate HTML files
+      run: |
+        # 查找所有HTML文件并验证
+        find . -name "*.html" -type f | while read -r file; do
+          echo "Validating: $file"
+          
+          # 使用htmlhint验证HTML
+          if command -v htmlhint >/dev/null 2>&1; then
+            htmlhint "$file"
+          else
+            echo "HtmlHint not available, skipping HTML validation for $file"
+          fi
+        done
+        
+    - name: Find and validate CSS files
+      run: |
+        # 查找所有CSS文件并验证
+        find . -name "*.css" -type f | while read -r file; do
+          echo "Validating: $file"
+          
+          # 使用csslint验证CSS
+          if command -v csslint >/dev/null 2>&1; then
+            csslint "$file"
+          else
+            echo "CSSLint not available, skipping CSS validation for $file"
+          fi
+        done
+        
+    - name: Check for broken links in HTML files
+      run: |
+        # 安装link-checker
+        npm install -g linkinator
+        
+        # 查找所有HTML文件并检查链接
+        find . -name "*.html" -type f | while read -r file; do
+          echo "Checking links in: $file"
+          
+          # 使用linkinator检查内部链接
+          linkinator "$file" --recurse --skip "^(http|https)://(?!localhost)"
+        done || echo "Link checking completed with warnings"
+        
+  accessibility-test:
+    name: Accessibility Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run pa11y accessibility test
+      uses: powerhome/playbook/.github/actions/pa11y-ci-action@master
+      with:
+        urls: 'http://localhost:3000/'
+        
+  # 运行简单的静态服务器并测试
+  serve-and-test:
+    name: Serve and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install http-server
+      run: npm install -g http-server
+      
+    - name: Start server in background
+      run: |
+        # 启动服务器
+        http-server . -p 3000 &
+        sleep 3  # 等待服务器启动
+        
+        # 检查服务器是否运行
+        curl -f http://localhost:3000/claw123/index.html || echo "Main page not accessible"
+        
+        # 列出claw123目录中的文件
+        ls -la claw123/
+        
+    - name: Test site availability
+      run: |
+        # 检查主要页面是否可以访问
+        if [ -f "claw123/index.html" ]; then
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/claw123/index.html)
+          if [ "$response" -eq 200 ]; then
+            echo "✅ Main page is accessible"
+          else
+            echo "❌ Main page is not accessible, got response: $response"
+            exit 1
+          fi
+        else
+          echo "⚠️  Main page (index.html) not found in claw123/"
+        fi
+        
+  notify:
+    name: Send Notification
+    needs: [lint-and-validate, accessibility-test, serve-and-test]
+    runs-on: ubuntu-latest
+    if: always()  # 无论前面的任务成功还是失败都会运行
+    
+    steps:
+    - name: Job Status Summary
+      run: |
+        echo "Workflow completed!"
+        echo "Status of lint-and-validate: ${{ needs.lint-and-validate.result }}"
+        echo "Status of accessibility-test: ${{ needs.accessibility-test.result }}"
+        echo "Status of serve-and-test: ${{ needs.serve-and-test.result }}"
+        
+        if [[ "${{ needs.lint-and-validate.result }}" == "success" ]] && 
+           [[ "${{ needs.accessibility-test.result }}" == "success" ]] && 
+           [[ "${{ needs.serve-and-test.result }}" == "success" ]]; then
+          echo "🎉 All checks passed!"
+        else
+          echo "⚠️ Some checks failed or were skipped"
+        fi

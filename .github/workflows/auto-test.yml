@@ -1,0 +1,152 @@
+name: Auto Test and Validation
+
+on:
+  # 每次提交都触发，不限制分支
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  validate:
+    name: Validate Code
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies (if package.json exists)
+      run: |
+        if [ -f package.json ]; then
+          npm ci
+        else
+          echo "No package.json found, skipping dependency installation"
+        fi
+        
+    - name: Run HTML validation
+      run: |
+        # 验证所有HTML文件的基本结构
+        declare -a html_files=()
+        while IFS= read -r -d '' file; do
+          html_files+=("$file")
+        done < <(find . -name "*.html" -print0)
+        
+        if [ ${#html_files[@]} -gt 0 ]; then
+          echo "Found ${#html_files[@]} HTML files, validating..."
+          
+          for file in "${html_files[@]}"; do
+            echo "Validating $file..."
+            
+            # 检查DOCTYPE
+            if ! grep -q "<!DOCTYPE html>" "$file"; then
+              echo "⚠️  Warning: $file might be missing DOCTYPE declaration"
+            fi
+            
+            # 检查基本HTML结构
+            if ! grep -q "<html" "$file"; then
+              echo "⚠️  Warning: $file might be missing <html> tag"
+            fi
+            
+            if ! grep -q "</html>" "$file"; then
+              echo "⚠️  Warning: $file might be missing </html> tag"
+            fi
+            
+            if ! grep -q "<head" "$file"; then
+              echo "⚠️  Warning: $file might be missing <head> tag"
+            fi
+            
+            if ! grep -q "<body" "$file"; then
+              echo "⚠️  Warning: $file might be missing <body> tag"
+            fi
+          done
+        else
+          echo "No HTML files found"
+        fi
+        
+    - name: Run CSS validation
+      run: |
+        # 检查所有CSS文件
+        declare -a css_files=()
+        while IFS= read -r -d '' file; do
+          css_files+=("$file")
+        done < <(find . -name "*.css" -print0)
+        
+        if [ ${#css_files[@]} -gt 0 ]; then
+          echo "Found ${#css_files[@]} CSS files"
+          
+          for file in "${css_files[@]}"; do
+            echo "Checking $file..."
+            
+            # 检查文件是否为空
+            if [ ! -s "$file" ]; then
+              echo "⚠️  Warning: $file is empty"
+            fi
+            
+            # 检查是否有基本的CSS语法
+            if [ $(wc -l < "$file") -gt 0 ] && ! grep -q "{" "$file"; then
+              echo "⚠️  Warning: $file might have syntax issues (no opening braces found)"
+            fi
+          done
+        else
+          echo "No CSS files found"
+        fi
+        
+    - name: Run JavaScript validation
+      run: |
+        # 检查所有JS文件
+        declare -a js_files=()
+        while IFS= read -r -d '' file; do
+          js_files+=("$file")
+        done < <(find . -name "*.js" -print0)
+        
+        if [ ${#js_files[@]} -gt 0 ]; then
+          echo "Found ${#js_files[@]} JS files"
+          
+          for file in "${js_files[@]}"; do
+            echo "Validating $file..."
+            
+            # 使用Node.js验证语法
+            if command -v node >/dev/null 2>&1; then
+              node --check "$file" || {
+                echo "❌ Error: $file has JavaScript syntax errors"
+                exit 1
+              }
+              echo "✅ $file syntax is valid"
+            else
+              echo "Node.js not available for JS validation"
+            fi
+          done
+        else
+          echo "No JS files found"
+        fi
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: validate
+    runs-on: ubuntu-latest
+    # 只在main分支的push事件时部署
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
+      with:
+        # 部署claw123目录下的所有文件
+        path: './claw123'
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
