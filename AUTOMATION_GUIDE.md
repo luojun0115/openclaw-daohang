@@ -32,7 +32,7 @@ git add .
 git commit -m "feat: initial commit with claw123 project"
 
 # 添加远程仓库（替换 YOUR_USERNAME 为你的 GitHub 用户名）
-git remote add origin https://github.com/YOUR_USERNAME/openclaw-daohang.git
+git remote add origin https://github.com/luojun0115/openclaw-daohang.git
 
 # 推送到 GitHub（这会触发自动工作流）
 git push -u origin main
