@@ -1,0 +1,95 @@
+name: CI/CD Pipeline
+
+on:
+  # 触发条件：push到main分支，pull request，或手动触发
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        # 检查是否有package.json，如果没有则跳过
+        if [ -f package.json ]; then
+          npm ci
+        else
+          echo "No package.json found, skipping dependency installation"
+        fi
+        
+    - name: Run HTML validation (optional)
+      run: |
+        # 验证HTML文件语法
+        for file in claw123/*.html; do
+          if [ -f "$file" ]; then
+            echo "Validating $file..."
+            # 简单的HTML验证（检查基本结构）
+            if ! grep -q "<!DOCTYPE html>" "$file"; then
+              echo "Warning: $file might be missing DOCTYPE declaration"
+            fi
+          fi
+        done
+        
+    - name: Run CSS validation (optional)
+      run: |
+        # 检查CSS文件是否存在语法错误
+        if [ -f claw123/styles.css ]; then
+          echo "Checking CSS file..."
+          # 基本检查：确保有内容
+          if [ ! -s claw123/styles.css ]; then
+            echo "Warning: styles.css is empty"
+          fi
+        fi
+        
+    - name: Run JavaScript validation
+      run: |
+        # 使用ESLint检查JavaScript（如果安装了eslint）
+        if [ -f claw123/script.js ]; then
+          echo "Validating JavaScript..."
+          # 基本语法检查使用Node.js
+          if command -v node >/dev/null 2>&1; then
+            node --check claw123/script.js
+            echo "JavaScript syntax is valid"
+          else
+            echo "Node.js not available for JS validation"
+          fi
+        fi
+
+  build:
+    name: Build and Deploy
+    needs: test
+    runs-on: ubuntu-latest
+    # 只在push到main分支时部署
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
+      with:
+        # 部署claw123目录下的所有文件
+        path: './claw123'
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2

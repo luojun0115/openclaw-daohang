@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>百虾大战 — OpenClaw 生态全景导航</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0f;--bg2:#111118;--surface:#16161f;--surface2:#1c1c28;
+  --surface3:#22222f;--border:#2a2a3a;--border2:#33334a;
+  --accent:#ff4d4d;--accent2:#ff6b6b;--accent3:#e83e3e;
+  --gold:#f0c040;--gold2:#e0b030;
+  --text:#e8e6f0;--text2:#b0aec0;--text3:#787690;
+  --green:#4ade80;--blue:#60a5fa;--purple:#a78bfa;
+  --orange:#fb923c;--cyan:#22d3ee;--pink:#f472b6;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'Noto Sans SC','Space Grotesk',system-ui,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6;
+  min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 800px 600px at 15% 10%,rgba(255,77,77,.06),transparent),
+    radial-gradient(ellipse 600px 500px at 85% 30%,rgba(240,192,64,.04),transparent),
+    radial-gradient(ellipse 700px 400px at 50% 80%,rgba(96,165,250,.03),transparent);
+  pointer-events:none;z-index:0;
+}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* Header */
+.header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(10,10,15,.88);backdrop-filter:blur(20px) saturate(1.4);
+  border-bottom:1px solid var(--border);padding:0 2rem;
+}
+.header-inner{
+  max-width:1400px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;height:64px;
+}
+.logo{display:flex;align-items:center;gap:.75rem;font-weight:900;font-size:1.5rem;color:var(--text);text-decoration:none}
+.logo-icon{font-size:1.8rem;filter:drop-shadow(0 0 8px rgba(255,77,77,.4))}
+.logo span{background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:.2rem;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.nav-links a{
+  color:var(--text2);text-decoration:none;font-size:.78rem;font-weight:500;
+  padding:.35rem .65rem;border-radius:6px;transition:all .2s;white-space:nowrap;
+}
+.nav-links a:hover{color:var(--text);background:var(--surface2)}
+.nav-links a.active{color:var(--accent);background:rgba(255,77,77,.1)}
+.nav-toggle{display:none;background:none;border:none;color:var(--text);font-size:1.3rem;cursor:pointer}
+
+/* Hero */
+.hero{position:relative;z-index:1;text-align:center;padding:3.5rem 2rem 2.5rem}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(255,77,77,.08);border:1px solid rgba(255,77,77,.2);
+  padding:.35rem 1rem;border-radius:100px;font-size:.78rem;color:var(--accent2);font-weight:500;
+  margin-bottom:1.5rem;animation:fadeIn .6s ease;
+}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{
+  font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;letter-spacing:-.03em;
+  line-height:1.1;margin-bottom:1rem;animation:fadeUp .7s ease;
+}
+.hero h1 .highlight{
+  background:linear-gradient(135deg,var(--accent),var(--gold),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-size:200% 200%;animation:gradient 4s ease infinite;
+}
+@keyframes gradient{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero p{font-size:1.05rem;color:var(--text2);max-width:600px;margin:0 auto 2rem;animation:fadeUp .8s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.stats{display:flex;justify-content:center;gap:2.5rem;margin-bottom:1.5rem;animation:fadeUp .9s ease}
+.stat{text-align:center}
+.stat-num{font-size:1.8rem;font-weight:900;font-family:'Space Grotesk',monospace;background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:.75rem;color:var(--text3);font-weight:500;margin-top:.15rem}
+
+.search-wrap{max-width:560px;margin:0 auto 1rem;position:relative;animation:fadeUp 1s ease}
+.search-wrap input{
+  width:100%;padding:.85rem 1.2rem .85rem 3rem;
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  color:var(--text);font-size:.95rem;font-family:inherit;outline:none;transition:all .3s;
+}
+.search-wrap input::placeholder{color:var(--text3)}
+.search-wrap input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,77,77,.1)}
+.search-wrap .search-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text3);font-size:1.1rem;pointer-events:none}
+
+/* Hero cards */
+.hero-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;max-width:900px;margin:0 auto 1rem;animation:fadeUp 1.1s ease}
+.hero-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:1.2rem;text-align:center;text-decoration:none;color:var(--text);
+  transition:all .25s;cursor:pointer;position:relative;overflow:hidden;
+}
+.hero-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s}
+.hero-card:nth-child(1)::before{background:linear-gradient(135deg,rgba(255,77,77,.06),transparent)}
+.hero-card:nth-child(2)::before{background:linear-gradient(135deg,rgba(240,192,64,.06),transparent)}
+.hero-card:nth-child(3)::before{background:linear-gradient(135deg,rgba(96,165,250,.06),transparent)}
+.hero-card:hover{transform:translateY(-3px);border-color:var(--border2);box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.hero-card:hover::before{opacity:1}
+.hero-card .hc-icon{font-size:2rem;margin-bottom:.6rem;position:relative;z-index:1}
+.hero-card .hc-name{font-weight:700;font-size:1rem;margin-bottom:.3rem;position:relative;z-index:1}
+.hero-card .hc-desc{font-size:.78rem;color:var(--text2);position:relative;z-index:1;line-height:1.5}
+
+/* ====== MAIN LAYOUT WITH RIGHT NAV ====== */
+.page-wrap{
+  display:flex;max-width:1460px;margin:0 auto;position:relative;z-index:1;
+  padding:0 2rem 4rem;gap:1.5rem;
+}
+.main-content{flex:1;min-width:0}
+
+/* Right side PPT nav */
+.side-nav{
+  position:sticky;top:80px;
+  width:52px;flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  padding:.5rem 0;
+  max-height:calc(100vh - 100px);
+}
+.side-nav .sn-item{
+  width:44px;display:flex;flex-direction:column;align-items:center;
+  padding:.6rem 0;cursor:pointer;transition:all .2s;
+  position:relative;
+}
+.side-nav .sn-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--border2);transition:all .3s;
+  flex-shrink:0;
+}
+.side-nav .sn-item:hover .sn-dot{background:var(--text2);transform:scale(1.3)}
+.side-nav .sn-item.active .sn-dot{
+  background:var(--accent);transform:scale(1.5);
+  box-shadow:0 0 10px rgba(255,77,77,.5);
+}
+.side-nav .sn-label{
+  position:absolute;right:calc(100% + 8px);
+  background:var(--surface2);border:1px solid var(--border);
+  padding:.25rem .6rem;border-radius:6px;
+  font-size:.7rem;color:var(--text);white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+  box-shadow:0 4px 12px rgba(0,0,0,.4);
+}
+.side-nav .sn-item:hover .sn-label{opacity:1}
+.side-nav .sn-line{
+  width:1px;height:0;flex:1;
+  background:linear-gradient(180deg,var(--border),transparent);
+  min-height:4px;
+}
+.side-nav .sn-arrow{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text2);font-size:.9rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;margin-top:.5rem;flex-shrink:0;
+}
+.side-nav .sn-arrow:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.side-nav .sn-arrow:disabled{opacity:.3;pointer-events:none}
+
+/* Side page indicator */
+.side-page-num{
+  font-family:'Space Grotesk',monospace;
+  font-size:.65rem;color:var(--text3);
+  margin-top:.4rem;flex-shrink:0;
+}
+
+/* Section */
+.section{margin-bottom:3rem;scroll-margin-top:80px}
+.section-header{
+  display:flex;align-items:center;gap:.75rem;
+  margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);
+}
+.section-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;
+}
+.section-title{font-size:1.25rem;font-weight:700;letter-spacing:-.01em}
+.section-count{font-size:.72rem;color:var(--text3);background:var(--surface2);padding:.15rem .5rem;border-radius:100px;font-weight:500;margin-left:auto}
+
+/* Card Grid */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.75rem}
+.card-grid.wide{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+
+/* Card */
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:1rem 1.1rem;text-decoration:none;color:var(--text);
+  transition:all .25s cubic-bezier(.4,0,.2,1);
+  display:flex;align-items:flex-start;gap:.85rem;
+  position:relative;overflow:hidden;cursor:pointer;
+}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,77,77,.03),transparent);opacity:0;transition:opacity .3s}
+.card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3),0 0 0 1px rgba(255,77,77,.05)}
+.card:hover::before{opacity:1}
+.card-icon{
+  width:42px;height:42px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;
+  background:var(--surface2);border:1px solid var(--border);position:relative;z-index:1;
+}
+.card-body{flex:1;min-width:0;position:relative;z-index:1}
+.card-name{font-size:.92rem;font-weight:600;margin-bottom:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-desc{font-size:.78rem;color:var(--text2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-tag{position:absolute;top:.75rem;right:.75rem;font-size:.62rem;padding:.15rem .45rem;border-radius:4px;font-weight:600;letter-spacing:.02em;z-index:1}
+.tag-local{background:rgba(74,222,128,.12);color:var(--green)}
+.tag-cloud{background:rgba(96,165,250,.12);color:var(--blue)}
+.tag-free{background:rgba(240,192,64,.12);color:var(--gold)}
+.tag-hot{background:rgba(255,77,77,.12);color:var(--accent)}
+.tag-new{background:rgba(167,139,250,.12);color:var(--purple)}
+
+/* Footer */
+.footer{text-align:center;padding:3rem 2rem;border-top:1px solid var(--border);color:var(--text3);font-size:.8rem;position:relative;z-index:1}
+.footer a{color:var(--accent);text-decoration:none}
+
+/* Back to top */
+.back-top{
+  position:fixed;bottom:2rem;right:2rem;z-index:99;
+  width:42px;height:42px;border-radius:50%;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text2);font-size:1.1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+  opacity:0;pointer-events:none;
+}
+.back-top.show{opacity:1;pointer-events:auto}
+.back-top:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* Section icon colors */
+.si-official{background:rgba(255,77,77,.12);color:var(--accent)}
+.si-deploy{background:rgba(96,165,250,.12);color:var(--blue)}
+.si-tutorial{background:rgba(240,192,64,.12);color:var(--gold)}
+.si-ai{background:rgba(167,139,250,.12);color:var(--purple)}
+.si-coding{background:rgba(34,211,238,.12);color:var(--cyan)}
+.si-maas{background:rgba(251,146,60,.12);color:var(--orange)}
+.si-model{background:rgba(244,114,182,.12);color:var(--pink)}
+.si-skill{background:rgba(74,222,128,.12);color:var(--green)}
+.si-agent{background:rgba(255,77,77,.12);color:var(--accent2)}
+.si-pay{background:rgba(240,192,64,.12);color:var(--gold2)}
+.si-crypto{background:rgba(96,165,250,.12);color:var(--blue)}
+.si-bench{background:rgba(167,139,250,.12);color:var(--purple)}
+
+/* Responsive */
+@media(max-width:1100px){
+  .side-nav{display:none}
+  .page-wrap{padding:0 1.5rem 3rem}
+}
+@media(max-width:900px){
+  .hero-cards{grid-template-columns:1fr}
+  .nav-links{
+    display:none;position:fixed;top:64px;left:0;right:0;
+    background:rgba(10,10,15,.95);backdrop-filter:blur(20px);
+    flex-direction:column;padding:1rem;gap:.25rem;border-bottom:1px solid var(--border);
+  }
+  .nav-links.open{display:flex}
+  .nav-toggle{display:block}
+  .stats{gap:1.5rem}
+  .card-grid{grid-template-columns:1fr}
+  .page-wrap{padding:0 1rem 3rem}
+}
+@media(max-width:600px){
+  .header{padding:0 1rem}
+  .hero{padding:2.5rem 1rem 2rem}
+  .hero h1{font-size:2rem}
+  .stats{gap:1rem;flex-wrap:wrap}
+  .stat-num{font-size:1.4rem}
+  .card-grid,.card-grid.wide{grid-template-columns:1fr}
+}
+
+/* Section entrance animation */
+.section{opacity:0;transform:translateY(30px);transition:all .5s ease}
+.section.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <span class="logo-icon">🦐</span>
+      <span>百虾大战</span>
+    </a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="菜单">☰</button>
+    <nav class="nav-links">
+      <a href="#official" class="active">OpenClaw</a>
+      <a href="#variants">百虾名录</a>
+      <a href="#deploy">云端部署</a>
+      <a href="#tutorials">教程合集</a>
+      <a href="#ai">常用AI</a>
+      <a href="#coding">Coding Plan</a>
+      <a href="#maas">MaaS平台</a>
+      <a href="#models">AI大模型</a>
+      <a href="#benchmarks">模型评测</a>
+      <a href="#skills">Skills市场</a>
+      <a href="#agent">Agent生态</a>
+      <a href="#pay">Agent支付</a>
+      <a href="#crypto">币圈生态</a>
+      <a href="#tools">工具箱</a>
+      <a href="#media">媒体资讯</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-badge"><span class="dot"></span> OpenClaw 生态全景导航 · 实时更新</div>
+  <h1>百<span class="highlight">虾</span>大战</h1>
+  <p>收录 150+ OpenClaw 生态项目，从官方资源到第三方部署，从云端到本地，一站纵览全部"龙虾"势力。</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">150+</div><div class="stat-label">收录项目</div></div>
+    <div class="stat"><div class="stat-num">15</div><div class="stat-label">生态分类</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">云服务商</div></div>
+    <div class="stat"><div class="stat-num">20+</div><div class="stat-label">AI 大模型</div></div>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="搜索项目名称或描述…" oninput="filterCards()">
+  </div>
+  <div class="hero-cards">
+    <a class="hero-card" href="https://www.openclaw.ai" target="_blank" rel="noopener">
+      <div class="hc-icon">🏠</div>
+      <div class="hc-name">OpenClaw 官网</div>
+      <div class="hc-desc">开源、本地优先的自主 AI 助手，运行在你的电脑或服务器上</div>
+    </a>
+    <a class="hero-card" href="https://github.com/openclaw" target="_blank" rel="noopener">
+      <div class="hc-icon">🐙</div>
+      <div class="hc-name">官方 GitHub</div>
+      <div class="hc-desc">收集了 OpenClaw 的源代码，方便用户查阅、参考</div>
+    </a>
+    <a class="hero-card" href="https://docs.openclaw.ai" target="_blank" rel="noopener">
+      <div class="hc-icon">📖</div>
+      <div class="hc-name">官方文档</div>
+      <div class="hc-desc">适用于任何操作系统的 AI 智能体 Gateway 网关</div>
+    </a>
+  </div>
+</section>
+
+<div class="page-wrap">
+<main class="main-content" id="content">
+
+  <!-- 百虾名录 -->
+  <section class="section" id="variants">
+    <div class="section-header">
+      <div class="section-icon si-official">🦐</div>
+      <h2 class="section-title">百虾名录</h2>
+      <span class="section-count">33 个项目</span>
+    </div>
+    <div class="card-grid wide">
+      <a class="card" href="https://kimi.ai" target="_blank" rel="noopener">
+        <div class="card-icon">🦞</div>
+        <div class="card-body"><div class="card-name">Kimi Claw</div><div class="card-desc">（云端）集成全球爆火的开源智能体框架 OpenClaw</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🚀</div>
+        <div class="card-body"><div class="card-name">MaxClaw</div><div class="card-desc">（云端）10 秒内完成 OpenClaw 云端部署，无需配置服务器，零维护负担</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📎</div>
+        <div class="card-body"><div class="card-name">飞书 OpenClaw</div><div class="card-desc">提供原版 OpenClaw 完整能力，独特个性、长期记忆，内置飞书官方插件</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🏗️</div>
+        <div class="card-body"><div class="card-name">ArkClaw</div><div class="card-desc">（云端）提供模型训练、推理、评测、精调等全方位功能与服务</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📱</div>
+        <div class="card-body"><div class="card-name">Xiaomi MiMo Claw</div><div class="card-desc">（云端）依托小米最新大模型打造，实现一键部署 OpenClaw 智能体</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">⚡</div>
+        <div class="card-body"><div class="card-name">飞书秒搭</div><div class="card-desc">（云端）内置飞书官方插件，免去繁琐配置，即刻在飞书中与你的智能助手对话</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="https://coze.cn" target="_blank" rel="noopener">
+        <div class="card-icon">🧩</div>
+        <div class="card-body"><div class="card-name">扣子 Coze</div><div class="card-desc">（云端）字节旗下 AI Agent 开发平台，让每个人都能轻松创建自己的 AI 机器人</div></div>
+        <span class="card-tag tag-hot">热门</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🎯</div>
+        <div class="card-body"><div class="card-name">DuClaw</div><div class="card-desc">（云端）免除镜像选择、服务器部署及 API Key 配置，"即开即用"</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">👣</div>
+        <div class="card-body"><div class="card-name">StepClaw</div><div class="card-desc">（云端）阶跃星辰推出基于 OpenClaw 打造的云端 AI 助手</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">💬</div>
+        <div class="card-body"><div class="card-name">Qclaw</div><div class="card-desc">（本地）支持微信直联，扫码绑定后，随时随地通过微信发指令远程操控电脑</div></div>
+        <span class="card-tag tag-local">本地</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🦞</div>
+        <div class="card-body"><div class="card-name">LobsterAI 有道龙虾</div><div class="card-desc">（本地）7×24小时帮你干活的全场景个人助理 Agent，主动执行任务、管理流程</div></div>
+        <span class="card-tag tag-local">本地</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🖥️</div>
+        <div class="card-body"><div class="card-name">WorkBuddy</div><div class="card-desc">（本地）AI 原生的桌面智能体工作台，一句指令即可完成数据处理、内容创作</div></div>
+        <span class="card-tag tag-local">本地</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🤖</div>
+        <div class="card-body"><div class="card-name">AutoClaw</div><div class="card-desc">（本地）提供飞书集成、模型热插拔、50+技能与 AutoGLM 浏览器自动化能力</div></div>
+        <span class="card-tag tag-local">本地</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🐵</div>
+        <div class="card-body"><div class="card-name">悟空</div><div class="card-desc">（本地）阿里巴巴全球首个企业级 AI 原生工作平台，"龙虾军团"24h 工作</div></div>
+        <span class="card-tag tag-hot">热门</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🌟</div>
+        <div class="card-body"><div class="card-name">AstronClaw</div><div class="card-desc">（云端）科大讯飞推出的云端部署 OpenClaw，支持一键部署、全天候在线运行</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🛡️</div>
+        <div class="card-body"><div class="card-name">360 安全龙虾</div><div class="card-desc">（本地）国内首个以"安全模式"为核心设计的 OpenClaw 智能体产品</div></div>
+        <span class="card-tag tag-local">本地</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🔧</div>
+        <div class="card-body"><div class="card-name">QoderWork</div><div class="card-desc">（本地）自然语言对话完成文件整理、数据处理、文档生成等任务</div></div>
+        <span class="card-tag tag-local">本地</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🧑‍💻</div>
+        <div class="card-body"><div class="card-name">阶跃桌面伙伴</div><div class="card-desc">（本地）始终在场，会主动做事的桌面 Agent，支持多任务并行处理</div></div>
+        <span class="card-tag tag-local">本地</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🔗</div>
+        <div class="card-body"><div class="card-name">JVS Claw</div><div class="card-desc">阿里云推出的多 Agent 智能体协作平台，免部署免配置的极简体验</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">✨</div>
+        <div class="card-body"><div class="card-name">EasyClaw</div><div class="card-desc">一键部署网关、可视化技能配置、多平台集成、本地文件管理、网页自动化</div></div>
+        <span class="card-tag tag-local">本地</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🤝</div>
+        <div class="card-body"><div class="card-name">CoPaw</div><div class="card-desc">阿里云协同个人智能体工作台，"本地/云端双部署、零代码扩展"</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🌐</div>
+        <div class="card-body"><div class="card-name">Tabbit 浏览器</div><div class="card-desc">（本地）一键引用网页、截图、收藏、文件进行对话，Agent 自动执行重复任务</div></div>
+        <span class="card-tag tag-local">本地</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">👥</div>
+        <div class="card-body"><div class="card-name">HiClaw</div><div class="card-desc">团队协作升级版，创新 Manager Agent 架构，多 Agent 高效协作与管理</div></div>
+        <span class="card-tag tag-hot">热门</span>
+      </a>
+      <a class="card" href="https://manus.ai" target="_blank" rel="noopener">
+        <div class="card-icon">🎩</div>
+        <div class="card-body"><div class="card-name">Manus</div><div class="card-desc">从任务规划到执行的全流程自动化，独立完成报告撰写、数据分析、跨平台操作</div></div>
+        <span class="card-tag tag-hot">热门</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">💚</div>
+        <div class="card-body"><div class="card-name">NemoClaw</div><div class="card-desc">英伟达推出的面向企业的开源 AI 智能体平台</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🐴</div>
+        <div class="card-body"><div class="card-name">牛马 AI</div><div class="card-desc">本地免费版的 Manus/Genspark，处理文档分析、数据整理到复杂工作流自动化</div></div>
+        <span class="card-tag tag-free">免费</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🐴</div>
+        <div class="card-body"><div class="card-name">MuleRun</div><div class="card-desc">全球首个自进化个人 AI — MuleRun（骡子快跑）</div></div>
+        <span class="card-tag tag-hot">热门</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">💸</div>
+        <div class="card-body"><div class="card-name">PoorClaw 穷虾</div><div class="card-desc">不花一分钱，直接使用 OpenClaw 的全部 AI 能力，无隐藏费用</div></div>
+        <span class="card-tag tag-free">免费</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🦊</div>
+        <div class="card-body"><div class="card-name">Linkfox Claw</div><div class="card-desc">LinkFox.Agent 帮你一键部署 OpenClaw，自由对话，智能随行</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🧵</div>
+        <div class="card-body"><div class="card-name">Loomy</div><div class="card-desc">科大讯飞桌面级 AI 个人助理，基于 AstronClaw 打造，"零配置、下载即用"</div></div>
+        <span class="card-tag tag-local">本地</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🏋️</div>
+        <div class="card-body"><div class="card-name">KiloClaw</div><div class="card-desc">面向开发者和团队的托管版 OpenClaw 服务</div></div>
+        <span class="card-tag tag-cloud">云端</span>
+      </a>
+      <a class="card" href="https://discord.gg/openclaw" target="_blank" rel="noopener">
+        <div class="card-icon">💬</div>
+        <div class="card-body"><div class="card-name">Discord 官方服务器</div><div class="card-desc">实时技术交流与问题解答</div></div>
+      </a>
+      <a class="card" href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">
+        <div class="card-icon">🐙</div>
+        <div class="card-body"><div class="card-name">OpenClaw 源码仓库</div><div class="card-desc">OpenClaw 开源项目主仓库，包含核心代码、文档与社区贡献指南</div></div>
+        <span class="card-tag tag-hot">官方</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 云端部署 -->
+  <section class="section" id="deploy">
+    <div class="section-header">
+      <div class="section-icon si-deploy">☁️</div>
+      <h2 class="section-title">云端部署</h2>
+      <span class="section-count">8 个服务商</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://www.aliyun.com" target="_blank" rel="noopener">
+        <div class="card-icon">☁️</div>
+        <div class="card-body"><div class="card-name">阿里云</div><div class="card-desc">快速上手三步轻松构建 AI 助理低至 9.9 元起</div></div>
+      </a>
+      <a class="card" href="https://cloud.tencent.com" target="_blank" rel="noopener">
+        <div class="card-icon">☁️</div>
+        <div class="card-body"><div class="card-name">腾讯云</div><div class="card-desc">轻量应用服务器让 OpenClaw 一直在线，稳定输出，也更安全</div></div>
+      </a>
+      <a class="card" href="https://www.volcengine.com" target="_blank" rel="noopener">
+        <div class="card-icon">🌋</div>
+        <div class="card-body"><div class="card-name">火山引擎</div><div class="card-desc">分钟级部署，拥有您的私人 AI 管家</div></div>
+      </a>
+      <a class="card" href="https://cloud.baidu.com" target="_blank" rel="noopener">
+        <div class="card-icon">🐻</div>
+        <div class="card-body"><div class="card-name">百度智能云</div><div class="card-desc">从快速开通到日常指令管理，极简的自动化体验</div></div>
+      </a>
+      <a class="card" href="https://www.huaweicloud.com" target="_blank" rel="noopener">
+        <div class="card-icon">🌸</div>
+        <div class="card-body"><div class="card-name">华为云</div><div class="card-desc">基于华为云 Flexus 云服务器 L 实例来搭建 OpenClaw</div></div>
+      </a>
+      <a class="card" href="https://www.jdcloud.com" target="_blank" rel="noopener">
+        <div class="card-icon">🐶</div>
+        <div class="card-body"><div class="card-name">京东云</div><div class="card-desc">来京东云部署 OpenClaw 即送美味小龙虾！</div></div>
+      </a>
+      <a class="card" href="https://www.scnet.cn" target="_blank" rel="noopener">
+        <div class="card-icon">🖥️</div>
+        <div class="card-body"><div class="card-name">国家超算互联网</div><div class="card-desc">"虾友"福利限时2周！免费领 1000 万 Tokens，续用价低至 0.1 元！</div></div>
+        <span class="card-tag tag-free">免费</span>
+      </a>
+      <a class="card" href="https://www.ctyun.cn" target="_blank" rel="noopener">
+        <div class="card-icon">📡</div>
+        <div class="card-body"><div class="card-name">天翼云</div><div class="card-desc">依托天翼云息壤智算平台，独立隔离运行环境，守住数据安全底线</div></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 教程合集 -->
+  <section class="section" id="tutorials">
+    <div class="section-header">
+      <div class="section-icon si-tutorial">📚</div>
+      <h2 class="section-title">教程合集</h2>
+      <span class="section-count">12 个教程</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📙</div>
+        <div class="card-body"><div class="card-name">OpenClaw 橙皮书</div><div class="card-desc">覆盖从认识到真正用起来的所有关键信息</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🔬</div>
+        <div class="card-body"><div class="card-name">万象 AI 实验室</div><div class="card-desc">OpenClaw 知识手册，从入门到精通全流程实操</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🛤️</div>
+        <div class="card-body"><div class="card-name">WaytoAGI 之路</div><div class="card-desc">详解 OpenClaw，最大最全面的 AI 知识库</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📊</div>
+        <div class="card-body"><div class="card-name">非凡产研</div><div class="card-desc">核心概念、适用场景，助力从零完成首次部署和运行</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🦞</div>
+        <div class="card-body"><div class="card-name">麻小玩虾指南</div><div class="card-desc">从零开始的 OpenClaw 使用指南，适用于所有人群</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📖</div>
+        <div class="card-body"><div class="card-name">OpenClaw 中文学习手册</div><div class="card-desc">全面的中文教程网站，从零开始掌握 AI 助手框架</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📘</div>
+        <div class="card-body"><div class="card-name">OpenClaw 从入门到精通</div><div class="card-desc">持续更新的知识库，基于实际体验测试手动编写</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">👋</div>
+        <div class="card-body"><div class="card-name">Hello Claw 教程</div><div class="card-desc">Datawhale 开源教程，从零领养到构建 AI 助手</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">⭐</div>
+        <div class="card-body"><div class="card-name">Awesome 教程</div><div class="card-desc">从零开始玩转 OpenClaw，最全面的中文教程</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📎</div>
+        <div class="card-body"><div class="card-name">飞书官方修炼指南</div><div class="card-desc">简单易懂的云端部署教程，一分钟即可完成部署</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📝</div>
+        <div class="card-body"><div class="card-name">中文用例大全</div><div class="card-desc">面向中文用户的真实使用案例合集</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🐛</div>
+        <div class="card-body"><div class="card-name">ClawPal</div><div class="card-desc">桌面配置助手，可视化管理你的 AI agent</div></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 常用AI -->
+  <section class="section" id="ai">
+    <div class="section-header">
+      <div class="section-icon si-ai">🧠</div>
+      <h2 class="section-title">常用 AI</h2>
+      <span class="section-count">9 个工具</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://tongyi.aliyun.com" target="_blank" rel="noopener">
+        <div class="card-icon">🔮</div>
+        <div class="card-body"><div class="card-name">千问</div><div class="card-desc">阿里云大规模语言模型，多轮对话、文案创作、逻辑推理、多模态理解</div></div>
+      </a>
+      <a class="card" href="https://www.doubao.com" target="_blank" rel="noopener">
+        <div class="card-icon">🫘</div>
+        <div class="card-body"><div class="card-name">豆包</div><div class="card-desc">抖音旗下 AI 工具，你的智能助手</div></div>
+      </a>
+      <a class="card" href="https://kimi.ai" target="_blank" rel="noopener">
+        <div class="card-icon">🌙</div>
+        <div class="card-body"><div class="card-name">Kimi</div><div class="card-desc">会推理解析，能深度思考的 AI 助手</div></div>
+      </a>
+      <a class="card" href="https://yuanbao.tencent.com" target="_blank" rel="noopener">
+        <div class="card-icon">💎</div>
+        <div class="card-body"><div class="card-name">腾讯元宝</div><div class="card-desc">腾讯推出的免费 AI 智能助手</div></div>
+      </a>
+      <a class="card" href="https://chat.deepseek.com" target="_blank" rel="noopener">
+        <div class="card-icon">🐋</div>
+        <div class="card-body"><div class="card-name">DeepSeek</div><div class="card-desc">幻方量化旗下深度求索推出的开源大模型和聊天助手</div></div>
+      </a>
+      <a class="card" href="https://chat.openai.com" target="_blank" rel="noopener">
+        <div class="card-icon">🤖</div>
+        <div class="card-body"><div class="card-name">ChatGPT</div><div class="card-desc">地表最强 AI 聊天机器人</div></div>
+      </a>
+      <a class="card" href="https://gemini.google.com" target="_blank" rel="noopener">
+        <div class="card-icon">♊</div>
+        <div class="card-body"><div class="card-name">Gemini</div><div class="card-desc">Google 推出的 AI 聊天对话机器人</div></div>
+      </a>
+      <a class="card" href="https://grok.x.ai" target="_blank" rel="noopener">
+        <div class="card-icon">❌</div>
+        <div class="card-body"><div class="card-name">Grok</div><div class="card-desc">马斯克旗下 xAI 推出的人工智能助手</div></div>
+      </a>
+      <a class="card" href="https://jimeng.jianying.com" target="_blank" rel="noopener">
+        <div class="card-icon">🎬</div>
+        <div class="card-body"><div class="card-name">即梦 AI</div><div class="card-desc">Seedance 2.0 字节最新的视频生成模型</div></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Coding Plan -->
+  <section class="section" id="coding">
+    <div class="section-header">
+      <div class="section-icon si-coding">💻</div>
+      <h2 class="section-title">Coding Plan</h2>
+      <span class="section-count">7 个方案</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://kimi.ai" target="_blank" rel="noopener">
+        <div class="card-icon">🌙</div>
+        <div class="card-body"><div class="card-name">Kimi Coding Plan</div><div class="card-desc">面向代码开发的权益，轻松兼容各类开发流程，更快更稳响应请求</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🔷</div>
+        <div class="card-body"><div class="card-name">MiniMax Token Plan</div><div class="card-desc">MiniMax 最强编程与智能体模型</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🧪</div>
+        <div class="card-body"><div class="card-name">智谱 Coding Plan</div><div class="card-desc">支持 GLM-5、GLM-4.7 和 GLM-4.6，所有套餐均可使用全部模型</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">☁️</div>
+        <div class="card-body"><div class="card-name">腾讯云 Coding Plan</div><div class="card-desc">集合多个最新模型，适配多种主流 AI 编程工具</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">☁️</div>
+        <div class="card-body"><div class="card-name">阿里云 Coding Plan</div><div class="card-desc">面向高频 AI 编程场景的订阅服务，多模型支持、月度 API 额度</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🌋</div>
+        <div class="card-body"><div class="card-name">火山引擎 Coding Plan</div><div class="card-desc">新用户专属优惠限量秒杀中，首月低至 8.9 元，免费解锁 ArkClaw</div></div>
+        <span class="card-tag tag-hot">优惠</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🐻</div>
+        <div class="card-body"><div class="card-name">百度千帆 Coding Plan</div><div class="card-desc">兼容 Claude Code 等主流编程工具，支持 GLM-5、MiniMax-M2.5 等</div></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- MaaS平台 -->
+  <section class="section" id="maas">
+    <div class="section-header">
+      <div class="section-icon si-maas">🏭</div>
+      <h2 class="section-title">MaaS 平台</h2>
+      <span class="section-count">11 个平台</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://www.aliyun.com/product/model" target="_blank" rel="noopener">
+        <div class="card-icon">☁️</div>
+        <div class="card-body"><div class="card-name">阿里云</div><div class="card-desc">专为企业打造的大模型服务与应用开发平台，丰富模型资源和商业化部署</div></div>
+      </a>
+      <a class="card" href="https://www.volcengine.com/product/ark" target="_blank" rel="noopener">
+        <div class="card-icon">🌋</div>
+        <div class="card-body"><div class="card-name">火山方舟</div><div class="card-desc">提供模型训练、推理、评测、精调等全方位功能与服务</div></div>
+      </a>
+      <a class="card" href="https://cloud.baidu.com/product/wenxinworkshop" target="_blank" rel="noopener">
+        <div class="card-icon">🐻</div>
+        <div class="card-body"><div class="card-name">百度千帆</div><div class="card-desc">以 Agent 为核心的一站式企业级大模型服务平台</div></div>
+      </a>
+      <a class="card" href="https://siliconflow.cn" target="_blank" rel="noopener">
+        <div class="card-icon">💎</div>
+        <div class="card-body"><div class="card-name">硅基流动</div><div class="card-desc">国内领先模型聚合平台，200+ 开源和商用模型统一 API 接口</div></div>
+      </a>
+      <a class="card" href="https://www.qiniu.com" target="_blank" rel="noopener">
+        <div class="card-icon">7️⃣</div>
+        <div class="card-body"><div class="card-name">七牛云</div><div class="card-desc">多个顶级闭源和开源大模型，兼容 OpenAI API 和 Anthropic API</div></div>
+      </a>
+      <a class="card" href="https://xinghuo.xfyun.cn" target="_blank" rel="noopener">
+        <div class="card-icon">🌟</div>
+        <div class="card-body"><div class="card-name">讯飞星火</div><div class="card-desc">一站式大模型精调定制及服务平台，数据管理到推理全流程工具链</div></div>
+      </a>
+      <a class="card" href="https://openrouter.ai" target="_blank" rel="noopener">
+        <div class="card-icon">🔀</div>
+        <div class="card-body"><div class="card-name">OpenRouter</div><div class="card-desc">AI 模型聚合平台，统一 API 接口，方便访问多种 AI 模型</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">⚡</div>
+        <div class="card-body"><div class="card-name">ZenMux</div><div class="card-desc">全球首个支持保险赔付机制的企业级大模型聚合平台</div></div>
+        <span class="card-tag tag-new">新</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🔢</div>
+        <div class="card-body"><div class="card-name">Model123</div><div class="card-desc">专业的企业级 AI 编程服务平台</div></div>
+      </a>
+      <a class="card" href="https://www.huaweicloud.com" target="_blank" rel="noopener">
+        <div class="card-icon">🌸</div>
+        <div class="card-body"><div class="card-name">华为云</div><div class="card-desc">覆盖大模型全生命周期管理，训练到评测全栈工具</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🎵</div>
+        <div class="card-body"><div class="card-name">快手万擎</div><div class="card-desc">企业级大模型服务与开发平台</div></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- AI大模型 -->
+  <section class="section" id="models">
+    <div class="section-header">
+      <div class="section-icon si-model">🧬</div>
+      <h2 class="section-title">AI 大模型</h2>
+      <span class="section-count">15 个模型</span>
+    </div>
+    <div class="card-grid wide">
+      <a class="card" href="https://kimi.ai" target="_blank" rel="noopener">
+        <div class="card-icon">🌙</div>
+        <div class="card-body"><div class="card-name">Kimi</div><div class="card-desc">专业代码生成、智能对话、视觉推理，支持多模态理解与处理</div></div>
+      </a>
+      <a class="card" href="https://minimax.chat" target="_blank" rel="noopener">
+        <div class="card-icon">🔷</div>
+        <div class="card-body"><div class="card-name">MiniMax</div><div class="card-desc">自主研发多模态通用大模型，强大代码和 Agent 能力，超长上下文</div></div>
+      </a>
+      <a class="card" href="https://open.bigmodel.cn" target="_blank" rel="noopener">
+        <div class="card-icon">🧪</div>
+        <div class="card-body"><div class="card-name">智谱 GLM</div><div class="card-desc">国产自主通用 AI 大模型开放平台，多款 LLM 和多模态视觉模型</div></div>
+      </a>
+      <a class="card" href="https://chat.deepseek.com" target="_blank" rel="noopener">
+        <div class="card-icon">🐋</div>
+        <div class="card-body"><div class="card-name">DeepSeek</div><div class="card-desc">DeepSeek-V3.2 正式版，强化 Agent 能力，融入思考推理</div></div>
+        <span class="card-tag tag-hot">热门</span>
+      </a>
+      <a class="card" href="https://tongyi.aliyun.com" target="_blank" rel="noopener">
+        <div class="card-icon">🔮</div>
+        <div class="card-body"><div class="card-name">千问 Qwen</div><div class="card-desc">首个原生多模态大模型，统一架构整合语言推理与视觉感知</div></div>
+      </a>
+      <a class="card" href="https://www.doubao.com" target="_blank" rel="noopener">
+        <div class="card-icon">🫘</div>
+        <div class="card-body"><div class="card-name">豆包 Doubao</div><div class="card-desc">字节跳动自研大模型，更强推理、多模态理解、GUI 操作能力</div></div>
+      </a>
+      <a class="card" href="https://claude.ai" target="_blank" rel="noopener">
+        <div class="card-icon">🟠</div>
+        <div class="card-body"><div class="card-name">Claude</div><div class="card-desc">Anthropic 开发的大型语言模型家族</div></div>
+      </a>
+      <a class="card" href="https://gemini.google.com" target="_blank" rel="noopener">
+        <div class="card-icon">♊</div>
+        <div class="card-body"><div class="card-name">Gemini</div><div class="card-desc">高推理能力、多模态处理、低成本高效能，适合科研和工程</div></div>
+      </a>
+      <a class="card" href="https://openai.com" target="_blank" rel="noopener">
+        <div class="card-icon">🤖</div>
+        <div class="card-body"><div class="card-name">GPT</div><div class="card-desc">首个具备原生计算机使用能力的通用模型，支持跨应用复杂工作流</div></div>
+      </a>
+      <a class="card" href="https://grok.x.ai" target="_blank" rel="noopener">
+        <div class="card-icon">❌</div>
+        <div class="card-body"><div class="card-name">Grok</div><div class="card-desc">马斯克旗下 xAI 公司开发的人工智能大模型系列</div></div>
+      </a>
+      <a class="card" href="https://llama.meta.com" target="_blank" rel="noopener">
+        <div class="card-icon">🦙</div>
+        <div class="card-body"><div class="card-name">Llama</div><div class="card-desc">Meta 推出的开源大语言模型</div></div>
+      </a>
+      <a class="card" href="https://mistral.ai" target="_blank" rel="noopener">
+        <div class="card-icon">🌬️</div>
+        <div class="card-body"><div class="card-name">Mistral</div><div class="card-desc">基于大语言模型的对话平台，提供多种模型选择和功能</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📱</div>
+        <div class="card-body"><div class="card-name">MiMo</div><div class="card-desc">小米自研开源推理大模型系列，专注高效推理与多模态交互</div></div>
+        <span class="card-tag tag-new">新</span>
+      </a>
+      <a class="card" href="https://xinghuo.xfyun.cn" target="_blank" rel="noopener">
+        <div class="card-icon">🌟</div>
+        <div class="card-body"><div class="card-name">讯飞星火</div><div class="card-desc">新一代认知智能大模型，跨领域知识和语言理解能力</div></div>
+      </a>
+      <a class="card" href="https://hunyuan.tencent.com" target="_blank" rel="noopener">
+        <div class="card-icon">💎</div>
+        <div class="card-body"><div class="card-name">腾讯混元</div><div class="card-desc">腾讯研发大语言模型，强大中文创作能力和逻辑推理能力</div></div>
+      </a>
+      <a class="card" href="https://yiyan.baidu.com" target="_blank" rel="noopener">
+        <div class="card-icon">🐻</div>
+        <div class="card-body"><div class="card-name">百度文心</div><div class="card-desc">百度 AI 助手，覆盖公文写作、学术论文、代码编程等丰富场景</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">⭐</div>
+        <div class="card-body"><div class="card-name">阶跃星辰</div><div class="card-desc">专注 AGI，自研大模型与多模态技术，"AI 六小龙"之一</div></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 模型评测 -->
+  <section class="section" id="benchmarks">
+    <div class="section-header">
+      <div class="section-icon si-bench">📊</div>
+      <h2 class="section-title">模型评测</h2>
+      <span class="section-count">5 个平台</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🦐</div>
+        <div class="card-body"><div class="card-name">PinchBench</div><div class="card-desc">龙虾模型排行榜，评估大模型在真实 Agent 自动化任务中的能力</div></div>
+      </a>
+      <a class="card" href="https://artificialanalysis.ai" target="_blank" rel="noopener">
+        <div class="card-icon">📈</div>
+        <div class="card-body"><div class="card-name">Artificial Analysis</div><div class="card-desc">AI 语言模型和 API 提供商的独立分析平台</div></div>
+      </a>
+      <a class="card" href="https://arena.ai" target="_blank" rel="noopener">
+        <div class="card-icon">🏟️</div>
+        <div class="card-body"><div class="card-name">Arena.ai</div><div class="card-desc">加州大学伯克利分校推出的 AI 模型评估平台</div></div>
+      </a>
+      <a class="card" href="https://openrouter.ai/rankings" target="_blank" rel="noopener">
+        <div class="card-icon">🔀</div>
+        <div class="card-body"><div class="card-name">OpenRouter Rankings</div><div class="card-desc">各大型语言模型在 OpenRouter 平台上的实际使用排名</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🎯</div>
+        <div class="card-body"><div class="card-name">XSCT Bench</div><div class="card-desc">场景化大模型测评平台</div></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Skills市场 -->
+  <section class="section" id="skills">
+    <div class="section-header">
+      <div class="section-icon si-skill">🧩</div>
+      <h2 class="section-title">Skills 市场</h2>
+      <span class="section-count">12 个市场</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://clawhub.com" target="_blank" rel="noopener">
+        <div class="card-icon">🏪</div>
+        <div class="card-body"><div class="card-name">ClawHub</div><div class="card-desc">OpenClaw 官方 Skills 注册中心</div></div>
+        <span class="card-tag tag-hot">官方</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">☁️</div>
+        <div class="card-body"><div class="card-name">SkillHub</div><div class="card-desc">腾讯云 Skills 社区，基于官方开源生态打造的本土化技能平台</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📋</div>
+        <div class="card-body"><div class="card-name">Skills.sh</div><div class="card-desc">Vercel 官方技能目录，24 小时热度排名，直观查找和快速安装</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📦</div>
+        <div class="card-body"><div class="card-name">SkillsMP</div><div class="card-desc">开源 skill 集合平台，根据 GitHub 仓库 push 时间持续同步更新</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">⭐</div>
+        <div class="card-body"><div class="card-name">虾评 Skill</div><div class="card-desc">面向 Agent 的精品优质 Skill 分享评测平台</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🇨🇳</div>
+        <div class="card-body"><div class="card-name">SkillHub 中国</div><div class="card-desc">助力国内用户快速找到能用、好用、可复用的实践方案</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🤖</div>
+        <div class="card-body"><div class="card-name">Agent Skills Hub</div><div class="card-desc">集中式平台，用于在多个 AI 工具中发现、管理和部署代理技能</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📂</div>
+        <div class="card-body"><div class="card-name">OpenClaw Directory</div><div class="card-desc">社区驱动中心，发现、提交和管理技能、插件、部署指南</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🗂️</div>
+        <div class="card-body"><div class="card-name">OpenClawDir</div><div class="card-desc">社区目录，探索生态系统技能、插件和职位</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🦞</div>
+        <div class="card-body"><div class="card-name">ClawSkills</div><div class="card-desc">5,490+ Skills 集合，已过滤 6,940 个垃圾插件</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">💰</div>
+        <div class="card-body"><div class="card-name">CryptoSkills</div><div class="card-desc">为 crypto 领域提供开源 Skills，为 AI 编码 agents 提供协议知识</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🥥</div>
+        <div class="card-body"><div class="card-name">CocoLoop</div><div class="card-desc">更快更安全的 AI Agent Skills 商店</div></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Agent生态 -->
+  <section class="section" id="agent">
+    <div class="section-header">
+      <div class="section-icon si-agent">🌐</div>
+      <h2 class="section-title">Agent 生态</h2>
+      <span class="section-count">19 个项目</span>
+    </div>
+    <div class="card-grid wide">
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📕</div>
+        <div class="card-body"><div class="card-name">Moltbook</div><div class="card-desc">面向 AI Agent 的社交网络</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🏙️</div>
+        <div class="card-body"><div class="card-name">InStreet</div><div class="card-desc">Agent 社交平台，AI Agent 在线互动、学习、竞技的社区</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">💬</div>
+        <div class="card-body"><div class="card-name">虾聊</div><div class="card-desc">AI Agent 的社交平台</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">👁️</div>
+        <div class="card-body"><div class="card-name">虾聊（纯 Agent）</div><div class="card-desc">纯 Agent 交流社区，人类只能围观，不能发言</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📧</div>
+        <div class="card-body"><div class="card-name">AgentMail</div><div class="card-desc">专为 AI Agent 打造的邮箱基础设施服务</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📬</div>
+        <div class="card-body"><div class="card-name">MailboxKit</div><div class="card-desc">聚焦新创和消费主题的科技媒体</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">✉️</div>
+        <div class="card-body"><div class="card-name">mails</div><div class="card-desc">为 agents 设计的邮件服务，编程方式收发和理解邮件</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">👻</div>
+        <div class="card-body"><div class="card-name">Souls.zip</div><div class="card-desc">浏览生产测试的 AI 代理灵魂和技能，适用于任何 AI 模型</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🚀</div>
+        <div class="card-body"><div class="card-name">OpenClaw Startups</div><div class="card-desc">开源本地优先 AI 机器人生态系统，无需编程即可启动助手</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">⚠️</div>
+        <div class="card-body"><div class="card-name">曝光观察板</div><div class="card-desc">列出可公开访问的活跃实例，提醒用户启用认证</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📊</div>
+        <div class="card-body"><div class="card-name">Claw Bench 排行榜</div><div class="card-desc">AI Agent 框架标准化评估：210 项任务、14 个领域、4 个难度等级</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">👁️‍🗨️</div>
+        <div class="card-body"><div class="card-name">ClawWatcher</div><div class="card-desc">监控仪表盘，对代理行为及其成本的实时可视化</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🎛️</div>
+        <div class="card-body"><div class="card-name">ClawManager</div><div class="card-desc">仪表盘，轻松搭建、部署和管理 AI 代理</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🔐</div>
+        <div class="card-body"><div class="card-name">Control Center</div><div class="card-desc">安全优先、本地优先的控制中心</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🐟</div>
+        <div class="card-body"><div class="card-name">水产市场</div><div class="card-desc">Agent 进化生态平台，社区共享机制让 Agent 互相学习</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🔍</div>
+        <div class="card-body"><div class="card-name">EdgeOne ClawScan</div><div class="card-desc">一键扫描不安全配置、恶意 Skill 与漏洞，实时拦截危险指令</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📋</div>
+        <div class="card-body"><div class="card-name">OpenClaw 使用案例</div><div class="card-desc">复制提示词直接使用于 OpenClaw、Claude Code、Cursor 等工具</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🛒</div>
+        <div class="card-body"><div class="card-name">A2H Market</div><div class="card-desc">同时面向人类和 AI Agent 的开放交易市场</div></div>
+      </a>
+      <a class="card" href="https://reddit.com/r/openclaw" target="_blank" rel="noopener">
+        <div class="card-icon">🤖</div>
+        <div class="card-body"><div class="card-name">Reddit 板块</div><div class="card-desc">Reddit 上 OpenClaw 讨论板块</div></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Agent支付 -->
+  <section class="section" id="pay">
+    <div class="section-header">
+      <div class="section-icon si-pay">💳</div>
+      <h2 class="section-title">Agent 支付</h2>
+      <span class="section-count">10 个方案</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">💲</div>
+        <div class="card-body"><div class="card-name">Claw402</div><div class="card-desc">一个用 USDC 付费的个人 AI 助手</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">💳</div>
+        <div class="card-body"><div class="card-name">SkillPay</div><div class="card-desc">基于信贷的通用支付系统，用于 OpenClaw 支付</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🌊</div>
+        <div class="card-body"><div class="card-name">FluxA</div><div class="card-desc">代理钱包，为 API 付费、向任何地址汇款、收取付款</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">💳</div>
+        <div class="card-body"><div class="card-name">AgentCard.ai</div><div class="card-desc">专为 AI Agent 打造的独立虚拟信用卡</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">💳</div>
+        <div class="card-body"><div class="card-name">AgentCard.sh</div><div class="card-desc">面向人工智能代理的虚拟信用卡</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🔑</div>
+        <div class="card-body"><div class="card-name">Clawcard.sh</div><div class="card-desc">统一凭证系统，一把钥匙管理信用卡、邮箱和电话号码</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🦞</div>
+        <div class="card-body"><div class="card-name">Lobster.cash</div><div class="card-desc">允许 Agent 支付任何费用，安全可靠，有人工控制和审计</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">💰</div>
+        <div class="card-body"><div class="card-name">Machines Cash</div><div class="card-desc">面向个人与代理的虚拟 Visa 信用卡</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🚪</div>
+        <div class="card-body"><div class="card-name">Gate Pay for AI</div><div class="card-desc">AI Agent 原生支付，请求、支付与回调均可自动完成</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🪙</div>
+        <div class="card-body"><div class="card-name">Coinbase AgentKit</div><div class="card-desc">通过 AgentKit 赋能 AI 代理进行自主支付</div></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 币圈生态 -->
+  <section class="section" id="crypto">
+    <div class="section-header">
+      <div class="section-icon si-crypto">🔗</div>
+      <h2 class="section-title">币圈生态</h2>
+      <span class="section-count">7 个平台</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://www.okx.com" target="_blank" rel="noopener">
+        <div class="card-icon">🅾️</div>
+        <div class="card-body"><div class="card-name">OKX Agent Trade Kit</div><div class="card-desc">AI 助手直连 OKX 账户，自然语言描述需求，AI 自动执行交易</div></div>
+      </a>
+      <a class="card" href="https://www.binance.com" target="_blank" rel="noopener">
+        <div class="card-icon">🅱️</div>
+        <div class="card-body"><div class="card-name">Binance Skills Hub</div><div class="card-desc">AI 代理原生访问加密货币，让加密货币全天候运行</div></div>
+      </a>
+      <a class="card" href="https://www.bitget.com" target="_blank" rel="noopener">
+        <div class="card-icon">🟡</div>
+        <div class="card-body"><div class="card-name">GetClaw</div><div class="card-desc">Bitget 出品 AI 交易自主智能体，不装软件，不写代码，开口即交易</div></div>
+      </a>
+      <a class="card" href="https://www.htx.com" target="_blank" rel="noopener">
+        <div class="card-icon">🔥</div>
+        <div class="card-body"><div class="card-name">HTX AI Skills</div><div class="card-desc">开放交易协议，自然语言即可查询行情、管理资产、执行交易</div></div>
+      </a>
+      <a class="card" href="https://www.gate.io" target="_blank" rel="noopener">
+        <div class="card-icon">🚪</div>
+        <div class="card-body"><div class="card-name">GateClaw</div><div class="card-desc">Gate 推出 AI Web3 Agent 工作平台，执行多种 Web3 自动化任务</div></div>
+      </a>
+      <a class="card" href="https://www.bybit.com" target="_blank" rel="noopener">
+        <div class="card-icon">🅱️</div>
+        <div class="card-body"><div class="card-name">Bybit AI Hub</div><div class="card-desc">AI 助手已接入 Bybit 全栈交易引擎</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🪙</div>
+        <div class="card-body"><div class="card-name">COIN CLAW</div><div class="card-desc">Web3 世界 AI 常驻特工，开箱即用，全天候待命</div></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 工具箱 -->
+  <section class="section" id="tools">
+    <div class="section-header">
+      <div class="section-icon si-coding">🔧</div>
+      <h2 class="section-title">工具箱</h2>
+      <span class="section-count">6 个工具</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://www.claw123.com" target="_blank" rel="noopener">
+        <div class="card-icon">🦐</div>
+        <div class="card-body"><div class="card-name">Claw123</div><div class="card-desc">为你推送和解读最前沿的 AI 资讯，OpenClaw 生态信息聚合站</div></div>
+        <span class="card-tag tag-hot">推荐</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📊</div>
+        <div class="card-body"><div class="card-name">ClawTracker</div><div class="card-desc">OpenClaw 项目数据追踪器，监控 GitHub Star、Fork 和社区活跃度</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🔄</div>
+        <div class="card-body"><div class="card-name">SkillMigrator</div><div class="card-desc">一键迁移 Skills 在不同 OpenClaw 版本间兼容性的工具</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🧪</div>
+        <div class="card-body"><div class="card-name">ClawPlayground</div><div class="card-desc">在线沙盒环境，无需安装即可体验 OpenClaw 核心功能</div></div>
+        <span class="card-tag tag-free">免费</span>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📐</div>
+        <div class="card-body"><div class="card-name">ConfigGenerator</div><div class="card-desc">可视化 OpenClaw 配置文件生成器，零代码完成复杂配置</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🔐</div>
+        <div class="card-body"><div class="card-name">ClawAudit</div><div class="card-desc">OpenClaw 安全审计工具，自动检测配置风险和潜在漏洞</div></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 媒体资讯 -->
+  <section class="section" id="media">
+    <div class="section-header">
+      <div class="section-icon si-tutorial">📰</div>
+      <h2 class="section-title">媒体资讯</h2>
+      <span class="section-count">5 个来源</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://www.claw123.com" target="_blank" rel="noopener">
+        <div class="card-icon">🦐</div>
+        <div class="card-body"><div class="card-name">Claw123 资讯</div><div class="card-desc">OpenClaw 生态资讯聚合，推送和解读最前沿的 AI 资讯</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📢</div>
+        <div class="card-body"><div class="card-name">OpenClaw 官方公告</div><div class="card-desc">OpenClaw 官方发布的产品更新、版本发布和重要通知</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">📝</div>
+        <div class="card-body"><div class="card-name">龙虾周报</div><div class="card-desc">每周精选 OpenClaw 社区动态、新 Skills 推荐和技术趋势</div></div>
+      </a>
+      <a class="card" href="https://reddit.com/r/openclaw" target="_blank" rel="noopener">
+        <div class="card-icon">🤖</div>
+        <div class="card-body"><div class="card-name">Reddit 社区</div><div class="card-desc">全球 OpenClaw 用户讨论、经验分享和问题解答</div></div>
+      </a>
+      <a class="card" href="#" target="_blank" rel="noopener">
+        <div class="card-icon">🐦</div>
+        <div class="card-body"><div class="card-name">X (Twitter) 话题</div><div class="card-desc">关注 #OpenClaw 话题获取最新开发者动态和社区热议</div></div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<!-- Right side PPT navigation -->
+<aside class="side-nav" id="sideNav">
+  <button class="sn-arrow" id="snPrev" onclick="navigateSection(-1)" disabled>▲</button>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px" id="snDots"></div>
+  <div class="side-page-num" id="snPageNum">1/15</div>
+  <button class="sn-arrow" id="snNext" onclick="navigateSection(1)">▼</button>
+</aside>
+
+</div>
+
+<footer class="footer">
+  <p>百虾大战 — OpenClaw 生态全景导航 · 数据持续更新中</p>
+  <p style="margin-top:.5rem">收录时间截至 2025 年 · 项目信息仅供参考 · 如有遗漏欢迎补充</p>
+</footer>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('.nav-links a');
+const snDots = document.getElementById('snDots');
+const snPageNum = document.getElementById('snPageNum');
+const snPrev = document.getElementById('snPrev');
+const snNext = document.getElementById('snNext');
+let currentIndex = 0;
+
+// Build side nav dots
+sections.forEach((sec, i) => {
+  const item = document.createElement('div');
+  item.className = 'sn-item';
+  item.dataset.index = i;
+  const dot = document.createElement('div');
+  dot.className = 'sn-dot';
+  const label = document.createElement('div');
+  label.className = 'sn-label';
+  label.textContent = sec.querySelector('.section-title')?.textContent || '';
+  item.appendChild(dot);
+  item.appendChild(label);
+  item.addEventListener('click', () => {
+    sec.scrollIntoView({ behavior: 'smooth' });
+  });
+  snDots.appendChild(item);
+  if (i < sections.length - 1) {
+    const line = document.createElement('div');
+    line.className = 'sn-line';
+    snDots.appendChild(line);
+  }
+});
+
+function updateSideNav(index) {
+  currentIndex = index;
+  const items = snDots.querySelectorAll('.sn-item');
+  items.forEach((item, i) => {
+    item.classList.toggle('active', i === index);
+  });
+  snPageNum.textContent = `${index + 1}/${sections.length}`;
+  snPrev.disabled = index === 0;
+  snNext.disabled = index === sections.length - 1;
+}
+
+function navigateSection(dir) {
+  const next = currentIndex + dir;
+  if (next >= 0 && next < sections.length) {
+    sections[next].scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+    e.preventDefault();
+    navigateSection(1);
+  } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+    e.preventDefault();
+    navigateSection(-1);
+  }
+});
+
+// Intersection observer for sections
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const idx = Array.from(sections).indexOf(entry.target);
+      if (idx >= 0) {
+        updateSideNav(idx);
+        // Update top nav
+        navLinks.forEach(a => a.classList.remove('active'));
+        const id = entry.target.id;
+        const active = document.querySelector(`.nav-links a[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+      // Entrance animation
+      entry.target.classList.add('visible');
+    }
+  });
+}, { rootMargin: '-20% 0px -60% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// Search
+function filterCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    const name = card.querySelector('.card-name')?.textContent.toLowerCase() || '';
+    const desc = card.querySelector('.card-desc')?.textContent.toLowerCase() || '';
+    const match = !q || name.includes(q) || desc.includes(q);
+    card.style.display = match ? '' : 'none';
+  });
+  sections.forEach(sec => {
+    const visibleCards = sec.querySelectorAll('.card:not([style*="display: none"])');
+    sec.style.display = visibleCards.length ? '' : 'none';
+  });
+}
+
+// Back to top
+window.addEventListener('scroll', () => {
+  document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
+});
+
+// Mobile nav
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.querySelector('.nav-links').classList.remove('open');
+  });
+});
+
+// Counter animation
+function animateCounters() {
+  document.querySelectorAll('.stat-num').forEach(el => {
+    const text = el.textContent;
+    const num = parseInt(text);
+    if (isNaN(num)) return;
+    const suffix = text.replace(/[0-9]/g, '');
+    let current = 0;
+    const step = Math.max(1, Math.floor(num / 30));
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= num) { current = num; clearInterval(timer); }
+      el.textContent = current + suffix;
+    }, 30);
+  });
+}
+const heroObs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) { animateCounters(); heroObs.disconnect(); }
+}, { threshold: 0.3 });
+heroObs.observe(document.querySelector('.stats'));
+
+// Init
+updateSideNav(0);
+</script>
+</body>
+</html>

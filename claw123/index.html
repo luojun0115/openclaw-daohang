@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw 导航 - 发现最好的 AI 智能体</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-left">
+            <button class="menu-btn" id="menuBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="logo">
+            <span class="logo-text">OpenClaw</span>
+            <span class="logo-highlight">导航</span>
+        </div>
+        <div class="header-right">
+            <button class="theme-toggle-btn" id="themeToggleBtn" title="切换主题">
+                <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+            <button class="search-icon-btn" id="searchIconBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- 搜索区域 -->
+    <section class="search-section">
+        <div class="search-box">
+            <div class="search-engine-selector">
+                <img src="https://www.google.com/favicon.ico" alt="Google" class="engine-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <input type="text" class="search-input" placeholder="搜索 AI 智能体、工具和资源...">
+            <button class="search-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+            </button>
+        </div>
+    </section>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content" id="mainContent">
+        <!-- 百虾大战 -->
+        <section class="category-section" data-section="0">
+            <h2 class="category-title">百虾大战</h2>
+            <div class="cards-grid">
+                <a href="#" class="card">
+                    <div class="card-icon" style="background: #FF6B6B;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">OpenClaw 官网</h3>
+                        <p class="card-desc">开源、本地优先的自主 AI 助手，运行在你的电脑或服务器上</p>
+                    </div>
+                </a>
+
+                <a href="#" class="card">
+                    <div class="card-icon" style="background: #333;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">官方 GitHub</h3>
+                        <p class="card-desc">收集了 OpenClaw 的源代码，方便用户查阅、参考</p>
+                    </div>
+                </a>
+
+                <a href="#" class="card">
+                    <div class="card-icon" style="background: #FF8C42;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">官方文档</h3>
+                        <p class="card-desc">适用于任何操作系统的 AI 智能体 Gateway 网关，支持 WhatsApp、Telegram、Discord、iMessage 等</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 热门推荐 -->
+        <section class="category-section" data-section="1">
+            <h2 class="category-title">热门推荐</h2>
+            <div class="cards-grid">
+                <a href="#" class="card">
+                    <div class="card-icon" style="background: #4285F4;">
+                        <span style="color: white; font-weight: bold; font-size: 14px;">Ark</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">ArkClaw</h3>
+                        <p class="card-desc">（云端）提供模型训练、推理、评测、精调等全方位功能与服务</p>
+                    </div>
+                </a>
+
+                <a href="#" class="card">
+                    <div class="card-icon" style="background: #FF6900;">
+                        <span style="color: white; font-weight: bold; font-size: 14px;">Mi</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Xiaomi MiMo Claw</h3>
+                        <p class="card-desc">（云端）依托小米最新大模型打造，实现一键部署 OpenClaw（龙虾）智能体</p>
+                    </div>
+                </a>
+
+                <a href="#" class="card">
+                    <div class="card-icon" style="background: #3370FF;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">飞书秒搭</h3>
+                        <p class="card-desc">（云端）内置飞书官方插件，免去繁琐配置，即刻在飞书中与你的智能助手对话</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 本地部署 -->
+        <section class="category-section" data-section="2">
+            <h2 class="category-title">本地部署</h2>
+            <div class="cards-grid">
+                <a href="#" class="card">
+                    <div class="card-icon" style="background: #E53935;">
+                        <span style="color: white; font-weight: bold; font-size: 14px;">Q</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Qclaw</h3>
+                        <p class="card-desc">（本地）支持微信直联，扫码绑定后，能随时随地通过微信发指令，远程操控电脑完成任务</p>
+                    </div>
+                </a>
+
+                <a href="#" class="card">
+                    <div class="card-icon" style="background: #FF4444;">
+                        <span style="color: white; font-weight: bold; font-size: 14px;">Lob</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">LobsterAI 有道龙虾</h3>
+                        <p class="card-desc">（本地）7×24 小时帮你干活的全场景个人助理 Agent，能够主动执行任务、管理流程、跨平台协作</p>
+                    </div>
+                </a>
+
+                <a href="#" class="card">
+                    <div class="card-icon" style="background: #7C4DFF;">
+                        <span style="color: white; font-weight: bold; font-size: 14px;">WB</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">WorkBuddy</h3>
+                        <p class="card-desc">（本地）AI 原生的桌面智能体工作台，一句指令即可完成数据处理、内容创作与深度分析</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 企业方案 -->
+        <section class="category-section" data-section="3">
+            <h2 class="category-title">企业方案</h2>
+            <div class="cards-grid">
+                <a href="#" class="card">
+                    <div class="card-icon" style="background: #FF6A00;">
+                        <span style="color: white; font-weight: bold; font-size: 14px;">悟</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">悟空</h3>
+                        <p class="card-desc">（本地）阿里巴巴发布的全球首个企业级 AI 原生工作平台，让每个团队、每家公司，都能拥有一支 24h 工作的"龙虾军团"</p>
+                    </div>
+                </a>
+
+                <a href="#" class="card">
+                    <div class="card-icon" style="background: #00BCD4;">
+                        <span style="color: white; font-weight: bold; font-size: 14px;">Astro</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">AstronClaw</h3>
+                        <p class="card-desc">（云端）科大讯飞推出的云端部署 OpenClaw，支持一键部署、全天候在线运行</p>
+                    </div>
+                </a>
+
+                <a href="#" class="card">
+                    <div class="card-icon" style="background: #FF9800;">
+                        <span style="color: white; font-weight: bold; font-size: 14px;">360</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">360 安全龙虾</h3>
+                        <p class="card-desc">（本地）国内首个以"安全模式"为核心设计的 OpenClaw 智能体产品</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- 右侧翻页导航 -->
+    <div class="page-nav" id="pageNav">
+        <button class="nav-arrow up" id="navUp" title="上一个分类">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+        </button>
+        <div class="nav-dots" id="navDots">
+            <span class="nav-dot active" data-section="0" title="百虾大战"></span>
+            <span class="nav-dot" data-section="1" title="热门推荐"></span>
+            <span class="nav-dot" data-section="2" title="本地部署"></span>
+            <span class="nav-dot" data-section="3" title="企业方案"></span>
+        </div>
+        <button class="nav-arrow down" id="navDown" title="下一个分类">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        </button>
+    </div>
+
+    <!-- 分类指示器 -->
+    <div class="section-indicator" id="sectionIndicator">
+        <span class="current-name">百虾大战</span>
+    </div>
+
+    <!-- 侧边栏菜单 -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-text">OpenClaw</span>
+                <span class="logo-highlight">导航</span>
+            </div>
+            <button class="close-btn" id="closeSidebar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-section="0">百虾大战</a>
+            <a href="#" class="nav-item" data-section="1">热门推荐</a>
+            <a href="#" class="nav-item" data-section="2">本地部署</a>
+            <a href="#" class="nav-item" data-section="3">企业方案</a>
+        </nav>
+    </aside>
+
+    <script src="script.js"></script>
+</body>
+</html>
